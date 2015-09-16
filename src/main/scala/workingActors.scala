@@ -85,6 +85,23 @@ class LogtoChart extends Actor {
 //
 class Worker extends Actor {
   // this class of Actors defines the role of a Worker
+  // a Worker receives Work messages
+  def receive = {
+    // the Worker class defines only one message handler, Work
+    // Work is passed with a start position and the number of steps per sequence
+    // the start always points to the start of a sequence and
+    // the number of steps per sequence always covers the sequence
+    // Work computes the value across a sequence
+    case Work(start, numStepsPerSequence) =>
+      //
+      // a Work message receives the start of a sequence and number of steps to compute within the sequence
+      // it passes those parameters (start, numStepsPerSequence) to startWorking, a local method defined below
+      // startworking returns the sum over the sequence, which is assigned to myResult
+      val myResult: Double = startWorking(start, numStepsPerSequence)
+      // 
+      // then message the Director's Result method
+      sender ! Result(myResult)
+  }
 }
 //
 //
