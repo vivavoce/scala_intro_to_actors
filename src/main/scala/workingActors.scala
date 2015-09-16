@@ -114,6 +114,33 @@ class Worker extends Actor {
 //
 class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: Int, reporter: ActorRef) extends Actor {
   //  this Actor directs the working actors
+  //
+  var computedPi: Double = _  // accumulate ALL the results of all the Workers (Actors assigned to a sequence) which converges to pi
+  var nrOfResults: Int = _  // note the number of sequences processed
+  val start: Long = System.currentTimeMillis  // note when Director first starts running
+  //
+  // create an akka router, workerRouter, that creates and manages the Worker actors
+  val workerRouter = context.actorOf(
+    Props[Worker].withRouter(RoundRobinRouter(numWorkingActors)),
+    name = "workerRouter"
+    )
+  //
+  def receive = {
+    //
+    case Calculate =>
+    for (i <- 0 until numSequences)
+      workerRouter ! Work(i * numSequences, numStepsPerSequence)
+    //
+    case Result(value) => 
+    computedPi += value  // each time this message is received add in the result
+    nrOfResults += 1  // increment the count of sequences for which results have been returned
+    if (nrOfResults == numSequences) { // when all sequences have been computed: chart, report and exit
+      println(); chartwork ! ChartSortedResults()  // chart the long tail
+      reporter ! ReportResult(computedPi, duration = (System.currentTimeMillis - start)) // report the final results
+      context.stop(self) // stop this actor (and children)
+    }
+    // 
+   }
 }
 //
 //
