@@ -94,10 +94,19 @@ class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: In
 //
 //
 class Reporter extends Actor {
-  // this Actor reports the final results and shuts down the actor system
+  def receive = {
+    //
+    case ReportResult(computedPi, duration) =>
+      val referencePi = 3.141592653589793238462643383279502884197169399375105820974944592307816406286  // a reference value of pi
+      println("    Computed Value:  " + computedPi.toString)
+      println("    Reference Value: " + referencePi.toString)
+      // examples of other news that could be reported
+      //   val absoluteError: Double = (referencePi - computedPi)
+      //   val percentError: Double = ((computedPi - referencePi)*100)/referencePi
+      //   println(); println("    Runtime: " + duration.toString)
+      context.system.shutdown   // shut down the Actor system
+  }
 }
-
-
 // START OF APP
 //
 object workingActorsMainObject extends App {
