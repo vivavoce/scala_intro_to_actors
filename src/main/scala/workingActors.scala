@@ -24,10 +24,25 @@ package workingActors  // an introduction to Actors, workers, and Scala programm
 // For further explanation please see the companion training video.
 
 // IMPORTS
+// from external libraries
+// scala (the running time), scalac (the compiler) and sbt (the build tool) can find standard libraries
+// for other libraries see the companion file build.sbt
+import scala.collection.mutable.ListBuffer
+import akka.actor.{Actor, ActorSystem, Props, ActorRef}
+import akka.routing.RoundRobinRouter
 
 
 // MESSAGES defined within this file's namespace
 //
+sealed trait MessageTrait
+case object Calculate extends MessageTrait
+case class Work(start: Int, numStepsPerSequence: Int) extends MessageTrait
+case class Result(value: Double) extends MessageTrait
+case class ReportResult(pi: Double, duration: Double) extends MessageTrait
+case class ForwardToLogProgress(start: Int, myResult: Double) extends MessageTrait
+case class LogProgress(start: Int, myResult: Double) extends MessageTrait
+case class ChartSortedResults() extends MessageTrait
+case class StopLogtoChart() extends MessageTrait
 
 
 // CLASSES
@@ -82,5 +97,4 @@ object workingActorsMainObject extends App {
   // The number of Work messages will be the same as the number of sequences which, in our demo, will exceed numWorkingActors
   // Each sequence will be assigned one Worker, sent one Work message, and managed round-robin by workerrouter
   // An Actor assigned by workerrouter will, therefore, work more than one sequence
-  //
 }
