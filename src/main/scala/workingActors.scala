@@ -102,6 +102,13 @@ class Worker extends Actor {
       // then message the Director's Result method
       sender ! Result(myResult)
   }
+  // Worker has one private method, startWorking, which does the actual work
+  // startWorking computes a result over the number of steps per sequence
+  def startWorking(start: Int, numStepsPerSequence: Int) : Double = {
+    var acc = 0.0 // declare an accumulator
+    for(i <- start until (start + numStepsPerSequence) ) acc += 4.0 * (1 - (i % 2) * 2) / (2 * i + 1)  // sum and difference within the series
+    acc  // return the accumulated value 
+  }
 }
 //
 //
