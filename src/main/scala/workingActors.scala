@@ -137,4 +137,21 @@ object workingActorsMainObject extends App {
   // The number of Work messages will be the same as the number of sequences which, in our demo, will exceed numWorkingActors
   // Each sequence will be assigned one Worker, sent one Work message, and managed round-robin by workerrouter
   // An Actor assigned by workerrouter will, therefore, work more than one sequence
-}
+  calculate(numWorkingActors = 1100, numStepsPerSequence = 20000, numSequences = 20000)
+  def calculate(numWorkingActors: Int, numStepsPerSequence: Int, numSequences: Int) {
+    //
+    // Create an Akka system
+    val system = ActorSystem("MyActors")
+    //system.registerOnTermination(System.exit(0)) 
+    //
+    // create an actor to print the final result to the console and shutdown the system
+    val reporter = system.actorOf(Props[Reporter], name = "reporter")
+    //
+    // create the director
+    val director = system.actorOf(
+      Props(new Director(numWorkingActors, numSequences, numStepsPerSequence, reporter)), name = "director")
+    //
+    // start the calculation
+    director ! Calculate
+  }
+ }
