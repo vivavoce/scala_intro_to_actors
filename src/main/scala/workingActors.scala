@@ -149,9 +149,10 @@ class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: In
       reporter ! ReportResult(computedPi, duration = (System.currentTimeMillis - start)) // report the final results
       context.stop(self) // stop this actor (and children)
     }
-    case ForwardToLogProgress(from: Int, myResult: Double) =>
+   case ForwardToLogProgress(from: Int, myResult: Double) =>
+      println(); println("  EXIT  " + self + " after working from " + from.toString + " to " + (from+numStepsPerSequence).toString + " with result: " + myResult.toString)
       chartwork ! LogProgress(from,myResult)
-  }
+   }
 }
 //
 //
