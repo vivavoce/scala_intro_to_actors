@@ -93,6 +93,10 @@ class Worker extends Actor {
     // the number of steps per sequence always covers the sequence
     // Work computes the value across a sequence
     case Work(start, numStepsPerSequence) =>
+      // 
+      // log to console each actor's entry when it first starts to work a sequence
+      // the same actor may appear more than once as there are more sequences to perform than actors assigned
+      println(); println("ENTER   " + self + " performing from " + start.toString + " to " + (start+numStepsPerSequence).toString)
       //
       // a Work message receives the start of a sequence and number of steps to compute within the sequence
       // it passes those parameters (start, numStepsPerSequence) to startWorking, a local method defined below
