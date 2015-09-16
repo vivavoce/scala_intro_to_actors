@@ -30,7 +30,9 @@ package workingActors  // an introduction to Actors, workers, and Scala programm
 import scala.collection.mutable.ListBuffer
 import akka.actor.{Actor, ActorSystem, Props, ActorRef}
 import akka.routing.RoundRobinRouter
-
+import scalax.chart.api._
+import org.jfree.chart.event.{ChartChangeEvent, ChartChangeListener}
+import javax.swing.JFrame
 
 // MESSAGES defined within this file's namespace
 //
