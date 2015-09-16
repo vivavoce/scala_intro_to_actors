@@ -51,6 +51,35 @@ case class StopLogtoChart() extends MessageTrait
 //
 class LogtoChart extends Actor {
   // this Actor keeps track of results for simple logging and charting
+  // while Akka supports a debugging logging mechanism, the logging and charting here are specific for this demo
+  // they will show the progress of the Actors and their results in context
+  val resultTuples = new ListBuffer[(Int,Double)]()  // track the results in a ListBuffer
+  // Actors have a message interface, their mailbox, wrapped in a receive function
+  def receive = {
+    // within receive, each message handler is a case
+    //
+    // LogProgress pushes a new tuple with values (start,myResult) into the ListBuffer
+    case LogProgress(start, myResult) => resultTuples += ((start,myResult))
+    //
+    // ChartSortedResults charts the sorted tuples in the longtail
+    case ChartSortedResults() =>
+      val sortedTuples = resultTuples.sorted  // sort the tuples
+      // set up an XY chart showing starting Sequences on X and their computed results on Y
+      val series = new XYSeries("the longtail refinement towards pi, shown here, is the work of 1000 concurrent actors")
+      val chart = XYLineChart(series)
+      // show the chart
+      chart.toFrame().peer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+      chart.show()
+      // chart the tail, every 10 results after the first 100
+      // showing that each worker refines the approximation
+      for (x <- 100 to 1100 by 10) {
+        swing.Swing onEDT {
+          series.add(x, sortedTuples(x)._2)
+        }
+        Thread.sleep(50) // slows down the chart animation so its easier to see
+      }
+      context.stop(self) // stop this actor (and children)
+  }
 }
 //
 //
