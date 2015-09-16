@@ -32,6 +32,24 @@ package workingActors  // an introduction to Actors, workers, and Scala programm
 
 // CLASSES
 //
+class LogtoChart extends Actor {
+  // this Actor keeps track of results for simple logging and charting
+}
+//
+//
+class Worker extends Actor {
+  // this class of Actors defines the role of a Worker
+}
+//
+//
+class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: Int, reporter: ActorRef) extends Actor {
+  //  this Actor directs the working actors
+}
+//
+//
+class Reporter extends Actor {
+  // this Actor reports the final results and shuts down the actor system
+}
 
 
 // START OF APP
@@ -57,5 +75,12 @@ object workingActorsMainObject extends App {
   println(" ENTER shows where each actor starts work on an assigned sequence in the series.")
   println(" EXIT shows the result of an actor computing 20,000 steps within a sequence.")
   println()
+  //
+  // numWorkingActors are the number of Actors that work on the series
+  // numSequences is the number of adjacent sequences that will be calculated, from left to right, in the series
+  // numStepsPerSequence is the number of steps to compute within a sequence, work all done by a single Worker
+  // The number of Work messages will be the same as the number of sequences which, in our demo, will exceed numWorkingActors
+  // Each sequence will be assigned one Worker, sent one Work message, and managed round-robin by workerrouter
+  // An Actor assigned by workerrouter will, therefore, work more than one sequence
   //
 }
