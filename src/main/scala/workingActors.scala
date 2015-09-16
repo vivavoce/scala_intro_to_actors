@@ -98,6 +98,9 @@ class Worker extends Actor {
       // it passes those parameters (start, numStepsPerSequence) to startWorking, a local method defined below
       // startworking returns the sum over the sequence, which is assigned to myResult
       val myResult: Double = startWorking(start, numStepsPerSequence)
+      //
+      // log the datapoint (start,myResult) for future charting
+      sender ! ForwardToLogProgress(start,myResult)
       // 
       // then message the Director's Result method
       sender ! Result(myResult)
