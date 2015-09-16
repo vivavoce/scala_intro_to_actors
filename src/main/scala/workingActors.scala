@@ -122,6 +122,9 @@ class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: In
   var nrOfResults: Int = _  // note the number of sequences processed
   val start: Long = System.currentTimeMillis  // note when Director first starts running
   //
+  // create an actor to dynamically record progress
+  val chartwork = context.actorOf(Props[LogtoChart],name = "chartwork")
+  //
   // create an akka router, workerRouter, that creates and manages the Worker actors
   val workerRouter = context.actorOf(
     Props[Worker].withRouter(RoundRobinRouter(numWorkingActors)),
@@ -142,8 +145,9 @@ class Director(numWorkingActors: Int, numSequences: Int, numStepsPerSequence: In
       reporter ! ReportResult(computedPi, duration = (System.currentTimeMillis - start)) // report the final results
       context.stop(self) // stop this actor (and children)
     }
-    // 
-   }
+    case ForwardToLogProgress(from: Int, myResult: Double) =>
+      chartwork ! LogProgress(from,myResult)
+  }
 }
 //
 //
