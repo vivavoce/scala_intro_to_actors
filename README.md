@@ -1,5 +1,5 @@
-Functional Programming - workingActors demo
-An introduction to Actors, workers, and Scala programming
+#### Functional Programming - workingActors demo
+#### An introduction to Actors, workers, and Scala programming
 
 For companion screencast see: http://bit.ly/scalademo
 
