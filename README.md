@@ -1,7 +1,7 @@
-#**workingActors** 
-##an introduction to Actors, workers, and Scala programming
+Functional Programming - workingActors demo
+An introduction to Actors, workers, and Scala programming
 
-for companion screencast see: http://bit.ly/scalademo
+For companion screencast see: http://bit.ly/scalademo
 
 
 #### DOING MANY THINGS AT THE SAME TIME
