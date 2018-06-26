@@ -1,6 +1,8 @@
 #**workingActors** 
 ##an introduction to Actors, workers, and Scala programming
 
+for companion screencast see: http://bit.ly/scalademo
+
 
 #### DOING MANY THINGS AT THE SAME TIME
 Writing software to do many things at the same time is concurrent programming. With adequate hardware, concurrent software can run in parallel. In the history of computer science various methods have been invented to support concurrent programming including: explicit synchronization of shared distributed memory; Actors; process algebras; software transactional memory; and dataflow. 
